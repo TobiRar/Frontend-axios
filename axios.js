@@ -25,35 +25,24 @@ function view() {
     
 
     `;
-    if(listOfAllPeople.length != 0){
-
-        html +=
-        `<table id="tablesPeople">
-            <tr>
-                <th scope="col">Nummer</th>
-                <th scope="col">Navn</th>
-            </tr>
-                ${tdPeople}
-        </table>`;
-        }
+        html += `<div>${tdPeople}</div>`;
     
     app.innerHTML = html;
 }
 
 function printPeople(){
     for (element in inputModel){
-        const lolo = new Person(element['firstName'], element['lastName'], element['age'], element['dadId'], element['momId'], element['birthDay'], element['adress']);
+        const lolo = new Person(element['id'],element['firstName'], element['lastName'], element['age'], element['dadId'], element['momId'], element['birthDay'], element['adress']);
         collectionOfPeople.push(lolo);
     }
 
-    for (element in collectionOfPeople){
+    for (element of collectionOfPeople){
         tdPeople += `
-        <tr>
-            <td>
-                ${element.firstName} ${element.lastName} ${element.age} ${element.dadId} ${element.momId} ${element.birthDay} ${element.adress}
-            </td>
-        </tr>
+            <p>
+                ${element.id}, ${element.firstName}, ${element.lastName}, ${element.age}, ${element.dadId}, ${element.momId}, ${element.birthDay}, ${element.adress}
+            </p>
         `;
+        view();
     }
 
 }
@@ -62,7 +51,7 @@ function getAll() {
     axios.get('https://localhost:7147/all')
     .then((res) => {
         inputModel.push(res.data)
-        console.log(res);
+        console.log(res.data);
     })
     .catch((err) => console.log(err))
       Promise.all(inputModel).then(()=> printPeople());
