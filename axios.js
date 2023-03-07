@@ -1,5 +1,6 @@
-var listOfAllPeople = [];
 let tdPeople =[];
+let collectionOfPeople = [];
+
 
 window.onload = function() {
     view();
@@ -39,59 +40,32 @@ function view() {
     app.innerHTML = html;
 }
 
-function loopAllPeople() {
-    for(let i=0; i <= listOfAllPeople[0].length; i++) {
-        console.log(i);
-        let peopleList = listOfAllPeople[0][i];
-        console.log(peopleList);
-        let peopleadress = peopleList;
-        let peopleWithMom = peopleList;
-        if(peopleList['adress'] != null)
-        {
-            peopleadress = Object.values(peopleList['adress']); 
-        }
+function printPeople(){
+    for (element in inputModel){
+        const lolo = new Person(element['firstName'], element['lastName'], element['age'], element['dadId'], element['momId'], element['birthDay'], element['adress']);
+        collectionOfPeople.push(lolo);
+    }
 
-        if(peopleList['mom'] != null)
-        {
-            peopleWithMom = Object.values(peopleList['mom']); 
-        }
+    for (element in collectionOfPeople){
         tdPeople += `
         <tr>
             <td>
-            ${i}
+                ${element.firstName} ${element.lastName} ${element.age} ${element.dadId} ${element.momId} ${element.birthDay} ${element.adress}
             </td>
-            <td>
-            ${"Name: "+ peopleList['firstName'] + "Mom:"  + "Adress: " + Object.values(peopleadress) } </td></tr>`;
-        
-    view();
+        </tr>
+        `;
     }
-}
 
-const object1 = {
-    a: "noe",
-    b: 42, 
-    c: false
-};
-//Her henter den ut alle verdiene i objektet selv om det er ulike verdityper og viser de i console-loggen
-console.log(Object.values(object1))
+}
 
 function getAll() {
-    axios.get('https://localhost:7147/all')
-    .then((res) => {
-        listOfAllPeople.push(res.data)
-    })
-    .catch((err) => console.log(err))
-     Promise.all(listOfAllPeople).then(()=> loopAllPeople());
-}
-
-function _getAll() {
     axios.get('https://localhost:7147/all')
     .then((res) => {
         inputModel.push(res.data)
         console.log(res);
     })
     .catch((err) => console.log(err))
-      Promise.all(inputModel).then(()=> loopAllPeople());
+      Promise.all(inputModel).then(()=> printPeople());
 }
 
 function createPerson() {
@@ -100,3 +74,5 @@ function createPerson() {
         console.table(response.data)
     })
 }
+
+
