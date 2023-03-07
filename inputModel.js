@@ -11,4 +11,4 @@ class Person {
     }
 }
 
-const inputModel = [];
+let inputModel;
